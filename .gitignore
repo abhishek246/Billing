@@ -1,0 +1,15 @@
+Billing/*/migrations/*
+*.pyc
+.*.swp
+.*.rdb
+.*.swo
+*.DS_Store
+*.log
+.idea/
+*.rdb
+env.list
+requirements.txt
+requirements.txt
+Dockerfile
+docker_uwsgi.sh
+env.list
