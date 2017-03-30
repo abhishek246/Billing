@@ -1,4 +1,7 @@
 Billing/*/migrations/*
+bin/
+include/
+lib/
 *.pyc
 .*.swp
 .*.rdb
