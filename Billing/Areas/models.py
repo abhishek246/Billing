@@ -45,3 +45,22 @@ class Area(BaseModel):
 
     def __unicode__(self):
         return  'Area Name: {0}'.format(str(self.area))
+
+
+class User(BaseModel):
+    ''''''
+
+    name = models.CharField(max_length=255)
+    mobile_number = models.CharField(max_length=255, unique=True)
+    token = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
+    status = models.SmallIntegerField(default=0)
+
+
+    class Meta:
+        db_table = 'user'
+        verbose_name = 'user'
+        verbose_name_plural = 'user'
+
+    def __unicode__(self):
+        return  'Area Name: {0}'.format(str(self.name))

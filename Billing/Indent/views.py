@@ -11,6 +11,7 @@ from datetime import datetime
 from Areas.models import *
 from Vendors.models import Vendor
 from Indent.models import Publisher,Indent
+from Billing.base import decorator_4xx
 
 import json
 
@@ -25,6 +26,7 @@ class IndentAPI(View):
             'res_data': {}
         }
 
+    @decorator_4xx([])
     def dispatch(self, *args, **kwargs):
         query_set = super(self.__class__, self).dispatch(*args, **kwargs)
         if self.status_code == 200:
@@ -63,6 +65,7 @@ class BulkAddIndent(View):
             'res_data': {}
         }
 
+    @decorator_4xx([])
     def dispatch(self, *args, **kwargs):
         query_set = super(self.__class__, self).dispatch(*args, **kwargs)
         if self.status_code == 200:
@@ -111,7 +114,8 @@ class PublisherAPI(View):
         self.response = {
             'res_data': {}
         }
-
+    
+    @decorator_4xx([])
     def dispatch(self, *args, **kwargs):
         query_set = super(self.__class__, self).dispatch(*args, **kwargs)
         if self.status_code == 200:

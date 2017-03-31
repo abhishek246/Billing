@@ -9,6 +9,7 @@ from django.db.models import Count, F, Sum
 
 from datetime import datetime
 from Vendors.models import *
+from Billing.base import decorator_4xx
 
 class VendorAPI(View):
     ''''''
@@ -21,6 +22,7 @@ class VendorAPI(View):
             'res_data': {}
         }
 
+    @decorator_4xx([])
     def dispatch(self, *args, **kwargs):
         query_set = super(self.__class__, self).dispatch(*args, **kwargs)
         if self.status_code == 200:

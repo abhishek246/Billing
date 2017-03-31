@@ -8,6 +8,7 @@ from django.db import models
 from django.db.models import Count, F, Sum
 
 from Invoice.models import *
+from Billing.base import decorator_4xx
 import json
 
 class GenerateBill(View):
@@ -21,6 +22,7 @@ class GenerateBill(View):
             'res_data': {}
         }
 
+    @decorator_4xx([])
     def dispatch(self, *args, **kwargs):
         super(self.__class__, self).dispatch(*args, **kwargs)
         # if self.status_code == 200:
@@ -93,18 +95,20 @@ class Payment(View):
             'res_data': {}
         }
 
+    @decorator_4xx([])
     def dispatch(self, *args, **kwargs):
         super(self.__class__, self).dispatch(*args, **kwargs)
         return JsonResponse(self.response, status=self.status_code)
 
     def post(self, request, *args, **kwargs):
-        params = request.POST
+        params = json.loads(request.body)
+        cid = params.get('cid')
         amount = float(params.get('amount'))
         _vendor_id = params.get('vendor_id')
         try:
             _vendor = Vendor.objects.get(pk=_vendor_id)
             with transaction.atomic():
-                txn = Transaction(amount=amount, vendor=_vendor, txn_type='PAID', user_id='AB')
+                txn = Transaction(amount=amount, vendor=_vendor, txn_type='PAID', user_id=cid)
                 balance = Balance.objects.get(vendor=_vendor)
                 balance.runningvalue -= amount
                 txn.save()
@@ -127,6 +131,7 @@ class TransactionsAPI(View):
             'res_data': {}
         }
 
+    @decorator_4xx([])
     def dispatch(self, *args, **kwargs):
         query_set = super(self.__class__, self).dispatch(*args, **kwargs)
         if self.status_code == 200:
@@ -154,6 +159,7 @@ class BalanceAPI(View):
             'res_data': {}
         }
 
+    @decorator_4xx([])
     def dispatch(self, *args, **kwargs):
         query_set = super(self.__class__, self).dispatch(*args, **kwargs)
         if self.status_code == 200:
@@ -166,3 +172,6 @@ class BalanceAPI(View):
         _area_id = params.get('area_id')
         _vendors_balance = Balance.objects.select_related('vendor').filter(vendor__area_id=_area_id)
         return _vendors_balance
+
+
+#class HardCopyGenerateBill(View):

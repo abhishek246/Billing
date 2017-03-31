@@ -5,3 +5,4 @@ class page_list(admin.ModelAdmin):
 	list_per_page = 1000
 
 admin.site.register(Area)
+admin.site.register(User)
